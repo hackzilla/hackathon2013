@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title>{% block title %}Welcome!{% endblock %}</title>
+        <meta name="description" content="{% block meta_description %}{% endblock %}">
+        <meta name="viewport" content="width=device-width">
+
+        <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+
+        <link rel="stylesheet" href="/css/normalize.css">
+        <link rel="stylesheet" href="/css/main.css">
+        <link rel="stylesheet" href="/css/template.css">
+        <link rel="stylesheet" href="/css/login.css">
+        <script src="http://js.pusher.com/1.12/pusher.min.js"></script>
+
+        <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.1/themes/base/jquery-ui.css" />
+        <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+        <script src="http://code.jquery.com/ui/1.10.1/jquery-ui.js"></script>
+        {% block stylesheets %}{% endblock %}
+    </head>
+    <body>
+        <!--[if lt IE 7]>
+            <p class="chromeframe">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">activate Google Chrome Frame</a> to improve your experience.</p>
+        <![endif]-->
+
+        <section>
+            <header role="banner">
+                <hgroup>
+                    <h1>
+                        Hackathon
+                        [<a href="{{ path('homepage') }}">Site</a> / <a href="{{ path('admin') }}">Admin</a>]
+                    </h1>
+                </hgroup>
+                <nav>
+                    <ul role="navigation">
+                        <li><a href="{{ path('homepage') }}">Home</a></li>
+                        <li><a href="{{ path('about') }}">About</a></li>
+                        <li><a href="{{ path('contact') }}">Contact us</a></li>
+                    </ul>
+                </nav>
+            </header>
+            <div id="content-container1">
+                <div id="content-container2">
+                    <aside class="left">
+                        <ul>
+                            <li>
+                                <li><a href="{{ path('homepage') }}">Home</a></li>
+                                <li><a href="{{ path('about') }}">About</a></li>
+                                <li><a href="{{ path('contact') }}">Contact us</a></li>
+                            </li>
+                        </ul>
+                    </aside>
+                    <article role="main">
+                        {% block pageHeadering %}
+                        <h2>
+                                Page heading
+                        </h2>
+                        {% endblock %}
+                        {% block body %}
+                        <header>
+                          <h3>Article Title</h3>
+                          <time datetime="2010-04-20">April, 20, 2010</time>
+                        </header>
+                        <section>
+                          <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
+                        </section>
+                        {% endblock %}
+                        {% block tracking %}
+                            <script type="text/javascript">
+                                var pusher = new Pusher('33bf5602dc9ded8bb50b');
+                                var channel = pusher.subscribe('ukwm-hackathon');
+                                channel.bind('ask-for-assistance', function(data){
+                                    $('#ask-for-assistance-question').text(data.question);
+                                    $('#phoneno').text(data.phoneno);
+                                    $('#ask-for-assistance').dialog({
+                                        height: 240,
+                                        width: 450,
+                                        modal: true
+                                    });
+                                });
+                            </script>
+                            <div id="ask-for-assistance" class="modal hide fade icons" data-backdrop="true" data-controls-modal="event-modal" data-keyboard="true" title="Would you like some assistance?">
+                                <p id="ask-for-assistance-question"></p>
+                                <h3 id="phoneno" style="width:100%;text-align: left;font-weight: bold;"><i class="icon icon-share" style="margin-right:0.5em;"></i></h3>
+                            </div>
+                        {% endblock %}
+                    </article>
+                    <aside class="right">
+                        <h3>
+                            Aside heading
+                        </h3>
+                        <p>
+                            Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan.
+                        </p>
+                    </aside>
+                </div>
+            </div>
+            <footer>
+                Copyright © Site name, 20XX
+            </footer>
+   
+        </section>       
+    
+        {% block javascripts %}{% endblock %}
+
+        <script src="/js/plugins.js"></script>
+        <script src="/js/main.js"></script>
+        <script src="/js/login.js"></script>
+
+        <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
+        <script>
+            var _gaq=[['_setAccount','UA-XXXXX-X'],['_trackPageview']];
+            (function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];
+            g.src=('https:'==location.protocol?'//ssl':'//www')+'.google-analytics.com/ga.js';
+            s.parentNode.insertBefore(g,s)}(document,'script'));
+        </script>
+    </body>
+</html>

@@ -1,0 +1,75 @@
+voice_fail:
+    pattern:   /voice/fail
+    defaults:  { _controller: HackzillaHackathonBundle:Voice:fail }
+
+voice_status:
+    pattern:   /voice/status
+    defaults:  { _controller: HackzillaHackathonBundle:Voice:status }
+
+voice:
+    pattern:   /voice
+    defaults:  { _controller: HackzillaHackathonBundle:Voice:index }
+
+prompt_stage_2:
+    pattern:   /voice2
+    defaults:  { _controller: HackzillaHackathonBundle:Voice:stage2 }
+
+prompt_stage_3:
+    pattern:   /voice3/{pin}
+    defaults:  { _controller: HackzillaHackathonBundle:Voice:stage3 }
+
+prompt_stage_4:
+    pattern:   /voice4/{pin}
+    defaults:  { _controller: HackzillaHackathonBundle:Voice:stageTranscribe }
+
+prompt_stage_5:
+    pattern:   /voice5/{pin}
+    defaults:  { _controller: HackzillaHackathonBundle:Voice:stageHelpdesk }
+
+
+sms:
+    pattern:   /sms
+    defaults:  { _controller: HackzillaHackathonBundle:Sms:index }
+
+sms_fail:
+    pattern:   /voice/fail
+    defaults:  { _controller: HackzillaHackathonBundle:Sms:fail }
+
+sms_status:
+    pattern:   /sms/status
+    defaults:  { _controller: HackzillaHackathonBundle:Sms:status }
+
+voice_numbers:
+    pattern:   /voice/numbers
+    defaults:  { _controller: HackzillaHackathonBundle:Voice:numbers }
+
+
+pusher:
+    pattern:   /pusher
+    defaults:  { _controller: HackzillaHackathonBundle:Pusher:index }
+
+pusher_listen:
+    pattern:   /pusher/listen
+    defaults:  { _controller: HackzillaHackathonBundle:Pusher:loop }
+
+pusher_assistance:
+    pattern:   /pusher/assistance
+    defaults:  { _controller: HackzillaHackathonBundle:Pusher:askForAssistance }
+
+
+#Static Pages
+homepage:
+    pattern:   /
+    defaults:  { _controller: HackzillaHackathonBundle:Static:homepage }
+
+about:
+    pattern:   /about
+    defaults:  { _controller: HackzillaHackathonBundle:Static:about }
+
+contact:
+    pattern:   /contact
+    defaults:  { _controller: HackzillaHackathonBundle:Static:contact }
+
+admin:
+    pattern:   /admin
+    defaults:  { _controller: HackzillaHackathonBundle:Static:admin }

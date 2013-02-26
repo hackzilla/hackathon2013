@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Pusher Test</title>
+    <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+    <script src="http://js.pusher.com/1.12/pusher.min.js" type="text/javascript"></script>
+    <script type="application/javascript">
+        // Enable pusher logging - don't include this in production
+        Pusher.log = function (message) {
+            if (window.console && window.console.log) window.console.log(message);
+        };
+
+        // Flash fallback logging - don't include this in production
+        WEB_SOCKET_DEBUG = true;
+
+        var pusher = new Pusher('{{ pusher_key }}');
+        var channel = pusher.subscribe('{{ pusher_channel }}');
+
+        var model_count = [];
+        var visited_variants = [];
+        var event_total = 0;
+        var cutoff = 2;
+
+        channel.bind('page-transition', function (data) {
+            event_total++;
+
+            var manufacturerName = data.data.manufacturer;
+            var productName = data.data.model;
+            var variantName = data.data.variant_name;
+
+            if(model_count[productName] === undefined){
+                model_count[productName] = 0;
+            }
+
+            model_count[productName] = model_count[productName] + 1;
+            visited_variants[productName] = data;
+
+            $('#log').append('<li> (' + event_total + ') ' + manufacturerName + " " + productName + " " + variantName + '</li>');
+
+            if(event_total >= cutoff){
+                var max_key = null;
+                var max_value = 0;
+                var variant = null;
+
+                for(var key in model_count){
+                    if(model_count[key] > max_value){
+                        max_key = key;
+                        max_value = model_count[key];
+                        variant = visited_variants[key];
+                    }
+                }
+
+                var pin = Math.ceil((Math.random() * 900) + 100);
+
+                var data =  {
+                    "question": "You've visited variants of the "
+                            + visited_variants[max_key].data.manufacturer + " "
+                            + visited_variants[max_key].data.model + " model " + max_value + " times"
+                            + ". Would you like some assistance from recombu cars team?",
+                    "phoneno": "If so call us now on 020 332 28708 (twilio pin: " + pin + " )",
+                    "pin": pin
+                };
+
+                var count = 0;
+                for(var key in visited_variants){
+                    data['ip'] = visited_variants[key].ip;
+                    data['variant_' + count] = visited_variants[key];
+                    data['variant_' + count]['visits'] = model_count[key];
+                    count++;
+                }
+
+                $.ajax({
+                    "type":"POST",
+                    "url":'{{ path('pusher_assistance') }}',
+                    "data":data,
+                    "dataType": "text",
+                    "success": function(data, textStatus, jqXHR){
+                        $('#log').append('<li>Sent event ' + data + '</li>');
+                    }
+                });
+
+
+                event_total = 0;
+                for(var v = 0; v< (cutoff/2); v++){
+                    visited_models = [];
+                    //model_count = [];
+                }
+            }
+
+
+        });
+    </script>
+</head>
+<body>
+<h2>Event Log</h2>
+<ul id="log"></ul>
+</body>
+
+</html>

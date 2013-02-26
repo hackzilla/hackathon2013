@@ -1,0 +1,112 @@
+{% extends('::base.html.twig') %}
+
+{% block pageHeadering %}
+<h2>
+        Admin
+</h2>
+{% endblock %}
+{% block body %}
+<h1>Call Logs</h1>
+<table border="1" width="100%">
+    <thead>
+        <tr>
+            <th scope="col">Time</th>
+            <th scope="col">Telephone</th>
+            <th scope="col">Pin</th>
+            <th scope="col">State</th>
+            <th scope="col">Country</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for row in CallLogs %}
+            <tr>
+                <td>{{ row.createdAt|date('Y-m-d H:i:s') }}</td>
+                <td>{{ row.from }}</td>
+                <td>{{ row.pin }}</td>
+                <td>{{ row.state }}</td>
+                <td>{{ row.country }}</td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="4">-- No calls --</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<h1>Call Backs</h2>
+<table border="1" width="100%">
+    <thead>
+        <tr>
+            <th scope="col">Time</th>
+            <th scope="col">Telephone</th>
+            <th scope="col">Pin</th>
+            <th scope="col">State</th>
+            <th scope="col">Country</th>
+            <th scope="col">Duration</th>
+            <th scope="col">Recording</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for row in CallBacks %}
+            <tr>
+                <td>{{ row.createdAt|date('Y-m-d H:i:s') }}</td>
+                <td>{{ row.from }}</td>
+                <td>{{ row.pin }}</td>
+                <td>{{ row.state }}</td>
+                <td>{{ row.country }}</td>
+                <td>{{ row.recordingDuration }}</td>
+                <td><a href="{{ row.recording }}" target="_blank">play</a></td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="6">-- No calls --</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<h1>Event Viewer</h2>
+<table border="1" width="100%">
+    <thead>
+        <tr>
+            <th scope="col">Time</th>
+            <th scope="col">IP</th>
+            <th scope="col">Pin</th>
+            <th scope="col">Variant</th>
+        </tr>
+    </thead>
+    <tbody id="eventViewer">
+    </tbody>
+</table>
+
+<script src="http://js.pusher.com/1.12/pusher.min.js"></script>
+<script type="text/javascript">
+   var pusher = new Pusher('33bf5602dc9ded8bb50b');
+   var channel = pusher.subscribe('ukwm-hackathon');
+   channel.bind('ask-for-assistance', function(data){
+       var currentDate = new Date();
+       var variant = '';
+       console.log(data);
+       
+       for(var i in data) {
+           if(i.substr(0, 8) == 'variant_') {
+               var variantI = i.substr(8, 1);
+               console.log(variantI);
+               console.log(variantI + ': ' + data[i].data.manufacturer + ", " + data[i].data.model + " ("+ data[i].data.variant_name+") count: " + data[i].visits+"<br>");
+               variant = variant + variantI + ': ' + data[i].data.manufacturer + ", " + data[i].data.model + " ("+ data[i].data.variant_name+") count: " + data[i].visits+"<br>";
+           }
+       }
+       
+       console.log(variant);
+       $('#eventViewer').append('<tr><td>'+currentDate.toString()+'</td><td>'+data.ip+'</td><td>'+data.pin+'</td><td>'+variant+'</td></tr>');
+   });
+   
+   function clearEvents()
+   {
+       $('#eventViewer tr').remove();
+   }
+</script>
+
+<input type="button" value="clear" onclick="clearEvents();">
+{% endblock %}
