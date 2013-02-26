@@ -21,7 +21,7 @@
         {% for row in CallLogs %}
             <tr>
                 <td>{{ row.createdAt|date('Y-m-d H:i:s') }}</td>
-                <td>{{ row.from }}</td>
+                <td>{{ row.from|slice(0,7) }} xxx xxx</td>
                 <td>{{ row.pin }}</td>
                 <td>{{ row.state }}</td>
                 <td>{{ row.country }}</td>
@@ -51,7 +51,7 @@
         {% for row in CallBacks %}
             <tr>
                 <td>{{ row.createdAt|date('Y-m-d H:i:s') }}</td>
-                <td>{{ row.from }}</td>
+                <td>{{ row.from|slice(0,7) }} xxx xxx</td>
                 <td>{{ row.pin }}</td>
                 <td>{{ row.state }}</td>
                 <td>{{ row.country }}</td>
