@@ -8,9 +8,10 @@ For more information, see: https://www.hackerleague.org/hackathons/php-uk-confer
 ---------------
 
     git clone https://github.com/hackzilla/hackathon2013.git
-    composer install
     cp app/config/parameters.yml.defaults app/config/parameters.yml
-    add twilio and pusher details to parameters.yml
+    add database, twilio and pusher details to parameters.yml
+    set permission for app/cache and app/logs directories
+    composer install
     app/console cache:clear --env=prod --no-debug
 
 
